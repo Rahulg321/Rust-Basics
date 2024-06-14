@@ -1,9 +1,54 @@
-fn main() {
-    immutable_borrowing();
-    mutable_borrowing();
+mod index;
+
+struct Point {
+    x: i32,
+    y: i32,
 }
 
+enum Color {
+    Red,
+    Green,
+    Blue,
+}
+fn main() {
+    let mut name = String::from("rahul");
+    println!("name is {}", name);
+    let copied_name = &mut name;
+    borrowing_variables(copied_name);
+    println!("original name after function is {}", name);
+}
+
+// fn main() {
+//     let my_string = String::from("hello");
+//     // when we clone the ownership does not get passed to the function
+//     let some_other_string = takes_ownership(my_string);
+//     println!("{}", some_other_string); // This line would cause a compile error because ownership has been moved.
+//                                        // takes_ownership(my_string);
+//                                        // println!("{}", my_string); // This line would cause a compile error because ownership has been moved.
+// }
+
+fn borrowing_variables(some_string: &String) {
+    // we are passing the reference of the string and access the value
+    // references can access the value but they cannot modify it
+    // some_string.push("surbhi and sejal sitting beneath the tree");
+    println!("value of some string is {}", some_string);
+}
+
+fn borrowing_mut_variables(some_string: &mut String) {
+    // we are passing the reference of the string and access the value
+    // references can access the value but they cannot modify it
+    some_string.push_str("surbhi and sejal sitting beneath the tree");
+    println!("value of some string is {}", some_string);
+}
+
+fn takes_ownership(some_string: String) -> String {
+    // passing a string, passes on the owenership
+    println!("{}", some_string); // `some_string` now owns the data.
+    return some_string;
+}
 pub fn ownership_concept() {
+    // when a variable goes out of scope, the value it was owning or the heap gets out of scope as well
+
     let x = String::from("hello");
     let y = x; // x is no longer valid, y is the new owner
     println!("y is {}", y)
@@ -11,11 +56,14 @@ pub fn ownership_concept() {
 
 pub fn immutable_borrowing() {
     // borrowing allows to use a value without modifying it
+    // we can have multiple such references
 
     let s1 = String::from("hello");
     let s2 = &s1;
+    let s3 = &s1;
     println!("s1 is {}", s1);
-    println!("s2 is {}", s2)
+    println!("s2 is {}", s2);
+    println!("s3 is {}", s3)
 }
 
 pub fn mutable_borrowing() {
