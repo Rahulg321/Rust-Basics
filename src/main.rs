@@ -1,10 +1,67 @@
 fn main() {
-    // simple_loop();
-    // basic_rust();
+    immutable_borrowing();
+    mutable_borrowing();
+}
 
-    let sentence = String::from("Decentralized applications are the future");
-    let first_word = get_first_word(sentence);
-    println!("{}", first_word);
+pub fn ownership_concept() {
+    let x = String::from("hello");
+    let y = x; // x is no longer valid, y is the new owner
+    println!("y is {}", y)
+}
+
+pub fn immutable_borrowing() {
+    // borrowing allows to use a value without modifying it
+
+    let s1 = String::from("hello");
+    let s2 = &s1;
+    println!("s1 is {}", s1);
+    println!("s2 is {}", s2)
+}
+
+pub fn mutable_borrowing() {
+    let mut s1 = String::from("hello");
+    let s2 = &mut s1; // s2 borrows s1 mutably
+    s2.push_str(", world"); // modify the value through s2
+    println!("{}", s1); // s1 is now "hello, world"
+}
+
+pub fn stack_fn() {
+    let a = 10;
+    let b = 10;
+    let c = a + b;
+
+    println!("a is {}", a);
+    println!("b is {}", b);
+    println!("c is {}", c);
+}
+
+fn heap_fn() {
+    // Create a string, which is allocated on the heap
+    let s1 = String::from("Hello");
+    let s2 = String::from("World");
+    let combined = format!("{} {}", s1, s2);
+    println!("Heap function: Combined string is '{}'", combined);
+}
+
+fn update_string() {
+    // Start with a base string on the heap
+    let mut s = String::from("Initial string");
+    println!("Before update: {}", s);
+    println!(
+        "Capacity: {}, length: {}, Pointer p {:p}",
+        s.capacity(),
+        s.len(),
+        s.as_ptr()
+    );
+    // Append some text to the string
+    s.push_str(" and some additional text");
+    println!(
+        "Capacity: {}, length: {}, Pointer p {:p}",
+        s.capacity(),
+        s.len(),
+        s.as_ptr()
+    );
+    println!("After update: {}", s);
 }
 
 fn get_first_word(sentence: String) -> String {
@@ -19,12 +76,13 @@ fn get_first_word(sentence: String) -> String {
     return answer;
 }
 
-fn simple_loop(n:i32) {
+fn simple_loop(n: i32) {
     for i in 1..n {
         println!("hello");
     }
 }
 
+// a public function that returns true if the number is even
 pub fn is_even(x: i32) -> bool {
     return x % 2 == 0;
 }
